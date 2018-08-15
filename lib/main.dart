@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(FriendlyChatApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class FriendlyChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: 'Friendlychat',
-        theme: new ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text("Friendlychat"),
-          ),
-        ));
+    return MaterialApp(
+      title: "Friendlychat",
+      home: ChatScreen(),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Friendlychat")),
+    );
   }
 }

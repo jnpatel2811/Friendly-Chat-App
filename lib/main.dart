@@ -33,11 +33,13 @@ class ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: <Widget>[
           Flexible(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              reverse: true,
-              itemBuilder: (_, int index) => _messages[index],
-              itemCount: _messages.length,
+            child: Scrollbar(
+              child: ListView.builder(
+                padding: EdgeInsets.all(8.0),
+                reverse: true,
+                itemBuilder: (_, int index) => _messages[index],
+                itemCount: _messages.length,
+              ),
             ),
           ),
           Divider(height: 1.0),

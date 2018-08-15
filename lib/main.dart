@@ -84,6 +84,10 @@ class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   }
 
   void _handleSubmitted(String text) {
+    if (text == null || text.isEmpty) {
+      return;
+    }
+
     _textController.clear();
 
     ChatMessage msg = ChatMessage(

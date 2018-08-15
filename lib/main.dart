@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(FriendlyChatApp());
 
+const String _name = "JP";
+
 class FriendlyChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _textController = new TextEditingController();
+  final TextEditingController _textController = TextEditingController();
+
+  final List<ChatMessage> _messages = <ChatMessage>[];
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +30,37 @@ class ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         title: Text("FriendlyChat"),
       ),
-      body: _buildTextComposer(),
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            child: ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) => _messages[index],
+              itemCount: _messages.length,
+            ),
+          ),
+          Divider(height: 1.0),
+          Container(
+            decoration: BoxDecoration(color: Theme.of(context).cardColor),
+            child: _buildTextComposer(),
+          )
+        ],
+      ),
     );
   }
 
   Widget _buildTextComposer() {
     return IconTheme(
       data: IconThemeData(color: Theme.of(context).accentColor),
-      child: new Container(
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(children: [
           Flexible(
-            child: new TextField(
+            child: TextField(
               controller: _textController,
               onSubmitted: _handleSubmitted,
-              decoration: new InputDecoration.collapsed(
+              decoration: InputDecoration.collapsed(
                 hintText: "Send a message",
               ),
             ),
@@ -60,5 +80,42 @@ class ChatScreenState extends State<ChatScreen> {
 
   void _handleSubmitted(String text) {
     _textController.clear();
+
+    ChatMessage msg = ChatMessage(text: text);
+    setState(() {
+      _messages.insert(0, msg);
+    });
+  }
+}
+
+class ChatMessage extends StatelessWidget {
+  ChatMessage({this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(
+            margin: const EdgeInsets.only(right: 16.0),
+            child: new CircleAvatar(child: new Text(_name[0])),
+          ),
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Text(_name, style: Theme.of(context).textTheme.subhead),
+              new Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: new Text(text),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
